@@ -1,7 +1,7 @@
 #if SQLITE_SWIFT_SQLCIPHER
 import XCTest
 import SQLite
-import SQLCipher
+internal import SQLCipher
 
 class CipherTests: XCTestCase {
     var db1: Connection!
