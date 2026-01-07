@@ -67,7 +67,8 @@ let package = Package(
         )
     ],
     traits: [
-        .trait(name: "SQLCipher", description: "Enables SQLCipher encryption when a key is supplied to Connection")
+        .trait(name: "SQLCipher", description: "Enables SQLCipher encryption when a key is supplied to Connection"),
+		.default(enabledTraits: ["SQLCipher"])
     ],
     dependencies: deps,
     targets: targets + testTargets,
