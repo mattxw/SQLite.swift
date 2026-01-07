@@ -6,28 +6,22 @@ let deps: [Package.Dependency] = [
     .github("sqlcipher/SQLCipher.swift.git", from: "4.11.0")
 ]
 
-let applePlatforms: [PackageDescription.Platform] = [.iOS, .macOS, .watchOS, .tvOS, .visionOS]
-
-let sqlcipherTraitTargetCondition: TargetDependencyCondition? = .when(platforms: applePlatforms, traits: ["SQLCipher"])
-
-let sqlcipherTraitBuildSettingCondition: BuildSettingCondition? = .when(platforms: applePlatforms, traits: ["SQLCipher"])
-
 let targets: [Target] = [
     .target(
         name: "SQLite",
         dependencies: [
             .product(name: "SwiftToolchainCSQLite", package: "swift-toolchain-sqlite", condition: .when(platforms: [.linux, .windows, .android])),
-            .product(name: "SQLCipher", package: "SQLCipher.swift", condition: sqlcipherTraitTargetCondition)
+            .product(name: "SQLCipher", package: "SQLCipher.swift")
         ],
         exclude: [
             "Info.plist"
         ],
         cSettings: [
-            .define("SQLITE_HAS_CODEC", to: nil, sqlcipherTraitBuildSettingCondition)
+            .define("SQLITE_HAS_CODEC", to: nil)
         ],
         swiftSettings: [
-            .define("SQLITE_HAS_CODEC", sqlcipherTraitBuildSettingCondition),
-            .define("SQLITE_SWIFT_SQLCIPHER", sqlcipherTraitBuildSettingCondition)
+            .define("SQLITE_HAS_CODEC"),
+            .define("SQLITE_SWIFT_SQLCIPHER")
         ]
     )
 ]
@@ -46,7 +40,7 @@ let testTargets: [Target] = [
             .copy("Resources")
         ],
         swiftSettings: [
-            .define("SQLITE_SWIFT_SQLCIPHER", sqlcipherTraitBuildSettingCondition)
+            .define("SQLITE_SWIFT_SQLCIPHER")
         ]
     )
 ]
@@ -67,8 +61,7 @@ let package = Package(
         )
     ],
     traits: [
-        .trait(name: "SQLCipher", description: "Enables SQLCipher encryption when a key is supplied to Connection"),
-		.default(enabledTraits: ["SQLCipher"])
+		.default(enabledTraits: [])
     ],
     dependencies: deps,
     targets: targets + testTargets,
